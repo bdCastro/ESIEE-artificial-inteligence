@@ -105,11 +105,11 @@ def breadthFirstSearch(problem):
 
     path = []
     visited = []
-    stack = util.Queue()
-    stack.push((problem.getStartState(), path))
+    queue = util.Queue()
+    queue.push((problem.getStartState(), path))
   
-    while not stack.isEmpty():
-        node, path = stack.pop()
+    while not queue.isEmpty():
+        node, path = queue.pop()
 
         if problem.isGoalState(node):
             return path
@@ -117,7 +117,7 @@ def breadthFirstSearch(problem):
         if node not in visited:
             visited.append(node)
             for successor in problem.getSuccessors(node):
-                stack.push((successor[0], path + [successor[1]]))
+                queue.push((successor[0], path + [successor[1]]))
     
     return path
 
