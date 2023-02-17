@@ -276,34 +276,42 @@ class CornersProblem(search.SearchProblem):
         self.startingPosition = startingGameState.getPacmanPosition()
         top, right = self.walls.height-2, self.walls.width-2
         self.corners = ((1,1), (1,top), (right, 1), (right, top))
+
         for corner in self.corners:
             if not startingGameState.hasFood(*corner):
                 print('Warning: no food in corner ' + str(corner))
+
         self._expanded = 0 # DO NOT CHANGE; Number of search nodes expanded
+
         # Please add any code here which you would like to use
         # in initializing the problem
-        "*** YOUR CODE HERE ***"
+        
         self.goal = self.corners
-        self.costFn =  lambda x: 1
+
+        def cost(x):
+            return 1
+
+        self.costFn = cost
+
     def getStartState(self):
         """
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        "*** YOUR CODE HERE ***"
+        
         return (self.startingPosition , ())
-        util.raiseNotDefined()
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        "*** YOUR CODE HERE ***"
+        
         isGoal = True
+
         for x in self.goal: 
            isGoal = isGoal and x in state[1]
+
         return isGoal
-        util.raiseNotDefined()
 
     def getSuccessors(self, state):
         """
@@ -325,20 +333,23 @@ class CornersProblem(search.SearchProblem):
             #   nextx, nexty = int(x + dx), int(y + dy)
             #   hitsWall = self.walls[nextx][nexty]
 
-            "*** YOUR CODE HERE ***"
             x,y = state[0]
             corner = state[1]
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
-            hitsWall = self.walls[nextx][nexty]
-            if not hitsWall :
-                nextState = (nextx, nexty)
-                if nextState in self.corners:
-                    if nextState not in corner:  
-                        corner=corner + ( nextState,)              
-                cost = self.costFn(nextState)
-                successors.append( ( (nextState, corner) , action, cost) )
+            wallHit = self.walls[nextx][nexty]
+
+            if not wallHit:
+                nState = (nextx, nexty)
+
+                if (nState in self.corners) and (nState not in corner):
+                    corner = corner + ( nState,)
+
+                cost = self.costFn(nState)
+                successors.append( ( (nState, corner) , action, cost) )
+
         self._expanded += 1 # DO NOT CHANGE
+
         return successors
 
     def getCostOfActions(self, actions):
