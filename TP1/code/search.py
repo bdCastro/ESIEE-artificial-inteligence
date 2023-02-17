@@ -170,7 +170,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         if node not in visited:
             visited.append(node)
             for successor in problem.getSuccessors(node):
-                cost = nullHeuristic(path + [successor[1]])
+                cost = heuristic(node, problem)
                 if successor[0] not in queue.heap:
                     queue.push((successor[0], path + [successor[1]]), cost)
                 elif successor[0] in queue.heap and cost < queue.heap[successor[0]][0]:
