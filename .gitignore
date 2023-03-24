@@ -1,3 +1,10 @@
 .venv
 __pycache__
 .DS_Store
+
+# report .gitignore
+**/report/*
+!**/report/*.tex
+!**/report/*.bib
+!**/report/*.pdf
+!**/report/images
