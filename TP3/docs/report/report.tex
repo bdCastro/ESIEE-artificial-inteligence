@@ -1,9 +1,10 @@
 \documentclass{article}
+\usepackage{listings}
 \usepackage{graphicx} % Required for inserting images
 
 \title{\huge TP3 Report \\ Artificial Intelligence}
 \author{Bruno Luiz Dias Alves de Castro \\ Victor Gabriel Mendes Sündermann}
-\date{March 2023}
+\date{April 2023}
 
 \begin{document}
 
@@ -11,9 +12,22 @@
 
 \section{Introduction}
 
-In this report, we will present the results of the third project of the Artificial Intelligence course. The project consists of implementing ...
+In this report, we will present the results of the third project of the Artificial Intelligence course. The project consists of implementing
 
 \section{Tests}
+To run the program, we use the following command:
+~\\
+
+\begin{lstlisting}[language=bash]
+    python3 pacman_AIC.py -p ReflexAgent [-l testClassic]
+\end{lstlisting}
+
+~\\
+Running the command without the flag \textit{-l testClassic}, renders a version of the maze without any walls.
+
+The first two test ran as expected, the Pacman tries to eat all the food in the field while avoiding all the ghosts. The mai problem with both tests is that, while avoiding the ghosts, it'll stay in place most of the time, and not go after the food.
+
+This can be improved by implementing an evaluation function, which will be developed in the next section.
 
 \section{Reflex Agent}
 
