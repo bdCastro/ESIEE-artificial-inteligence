@@ -1,6 +1,23 @@
 \documentclass{article}
 \usepackage{listings}
 \usepackage{graphicx} % Required for inserting images
+\usepackage{color}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+\lstnewenvironment{C}
+  {\lstset{language=C}} 
+%Add your addition parameters as required like showstringspaces , line numbering , 
+% frames , etc.seperated by a comma as shown in the CPP  environment 
+  {}
+\lstnewenvironment{CPP}
+  {\lstset{language=C++,basicstyle=\ttfamily\small,frame=none}}
+  {}
+\lstnewenvironment{Java}
+  {\lstset{language=Java}}
+  {}
+\lstnewenvironment{Python}
+  {\lstset{language=Python}}
+  {}
 
 \title{\huge TP3 Report \\ Artificial Intelligence}
 \author{Bruno Luiz Dias Alves de Castro \\ Victor Gabriel Mendes Sündermann}
@@ -16,13 +33,15 @@ In this report, we will present the results of the third project of the Artifici
 
 \section{Tests}
 To run the program, we use the following command:
-~\\
+
+\hbox{}
 
 \begin{lstlisting}[language=bash]
     python3 pacman_AIC.py -p ReflexAgent [-l testClassic]
 \end{lstlisting}
 
-~\\
+\hbox{}
+
 Running the command without the flag \textit{-l testClassic}, renders a version of the maze without any walls.
 
 The first two test ran as expected, the Pacman tries to eat all the food in the field while avoiding all the ghosts. The mai problem with both tests is that, while avoiding the ghosts, it'll stay in place most of the time, and not go after the food.
@@ -34,5 +53,54 @@ This can be improved by implementing an evaluation function, which will be devel
 In this part, we were purposed to improve the \textbf{ReflexAgent} function in the \textbf{multiAgents.py} file in the project by proposing an evaluation function.
 
 \subsection{ReflexAgent improvement}
+
+In order to improve the \textbf{ReflexAgent}, we need a good evalution function to help the AI decide what to do next. A great evaluation function should be able to tell the agent what is the best action to take in a given state, rewarding good actions and punishing bad ones.
+
+For our problem, we decided that a good action should be eating a food pellet, and a bad action should be getting eaten by a ghost. So, our evaluation function calculates the distance of Pacman to the food pallets and the ghosts. It then returns a score like the following:
+
+\hbox{}
+
+\begin{lstlisting}[language=python]
+    return score + closestFoodScore - closestGhostScore
+\end{lstlisting}
+
+\hbox{}
+
+We also decided on using the Manhattan distance to calculate the distance between Pacman, the ghosts and the food pellets, because it is a less computationally expensive sollution to this problem, and don't really affect the final score.
+
+\hbox{}
+
+Finally, the result we got is the following:
+
+\hbox{}
+
+\definecolor{light-gray}{gray}{0.95}
+\begin{lstlisting}[language=python, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
+def evaluationFunction(self, currentGameState, action):
+
+    """ VARIABLES """
+
+    foodList = newFood.asList()
+
+    # manhattan distance
+    foodDistances = \
+        [manhattanDistance(newPos, food) for food in foodList]
+    ghostDistances = \
+        [manhattanDistance(newPos, ghost) for ghost in newGhostsPos]
+
+    # closest food and ghost
+    closestFood = min(foodDistances) if len(foodDistances) > 0 else 0
+    closestGhost = min(ghostDistances) if len(ghostDistances) > 0 else 0
+
+    # score calculation for food and ghost
+    closestFoodScore = 0 if closestFood == 0 else 1.0/closestFood
+    closestGhostScore = 0 if closestGhost == 0 else 1.0/closestGhost
+
+    score = closestFoodScore - closestGhostScore
+
+    return successorGameState.getScore() + score
+\end{lstlisting}
+
+\section{Batata Frita}
 
 \end{document}
