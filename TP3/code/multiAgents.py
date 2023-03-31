@@ -131,7 +131,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
         bestScore, bestAction = -9999, Directions.STOP
 
         for action in gameState.getLegalActions(0):
-            value, _ = self.MIN_VALUE(gameState.generateSuccessor(0, action), d, 1)
+            successors = gameState.generateSuccessor(0, action)
+            value, _ = self.MIN_VALUE(successors, d, 1)
             if value > bestScore:
                 bestScore, bestAction = value, action
 
@@ -144,10 +145,11 @@ class MinimaxAgent(MultiAgentSearchAgent):
         bestScore, bestAction = 9999, Directions.STOP
 
         for action in gameState.getLegalActions(indexAgent):
+            successors = gameState.generateSuccessor(indexAgent, action)
             if indexAgent == gameState.getNumAgents() - 1:
-                value, _ = self.MAX_VALUE(gameState.generateSuccessor(indexAgent, action), d - 1)
+                value, _ = self.MAX_VALUE(successors, d - 1)
             else:
-                value, _ = self.MIN_VALUE(gameState.generateSuccessor(indexAgent, action), d, indexAgent + 1)
+                value, _ = self.MIN_VALUE(successors, d, indexAgent + 1)
 
             if value < bestScore:
                 bestScore, bestAction = value, action
