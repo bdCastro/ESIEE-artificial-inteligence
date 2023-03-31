@@ -89,8 +89,6 @@ class ReflexAgent(Agent):
 
         return successorGameState.getScore() + closestFoodScore - closestGhostScore
 
-      
-
 def scoreEvaluationFunction(currentGameState):
     """
     This default evaluation function just returns the score of the state.
@@ -126,6 +124,35 @@ class MinimaxAgent(MultiAgentSearchAgent):
     Your minimax agent (question 5)
     """
    
+    def MAX_VALUE(self, gameState, d):
+        if d == 0 or gameState.isWin() or gameState.isLose():
+            return self.evaluationFunction(gameState), Directions.STOP
+        
+        bestScore, bestAction = -9999, Directions.STOP
+
+        for action in gameState.getLegalActions(0):
+            value, _ = self.MIN_VALUE(gameState.generateSuccessor(0, action), d, 1)
+            if value > bestScore:
+                bestScore, bestAction = value, action
+
+        return bestScore, bestAction
+
+    def MIN_VALUE(self, gameState, d, indexAgent):
+        if d == 0 or gameState.isWin() or gameState.isLose():
+            return self.evaluationFunction(gameState), Directions.STOP
+
+        bestScore, bestAction = 9999, Directions.STOP
+
+        for action in gameState.getLegalActions(indexAgent):
+            if indexAgent == gameState.getNumAgents() - 1:
+                value, _ = self.MAX_VALUE(gameState.generateSuccessor(indexAgent, action), d - 1)
+            else:
+                value, _ = self.MIN_VALUE(gameState.generateSuccessor(indexAgent, action), d, indexAgent + 1)
+
+            if value < bestScore:
+                bestScore, bestAction = value, action
+
+        return bestScore, bestAction
    
     def getAction(self, gameState):
         """
@@ -150,12 +177,10 @@ class MinimaxAgent(MultiAgentSearchAgent):
         gameState.isLose():
         Returns whether or not the game state is a losing state
         """
-        "*** YOUR CODE HERE ***"
         
-        
- 
+        evaluation, action = self.MAX_VALUE(gameState, self.depth)
 
-        util.raiseNotDefined()
+        return action
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """

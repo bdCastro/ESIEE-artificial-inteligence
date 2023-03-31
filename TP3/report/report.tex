@@ -101,6 +101,64 @@ def evaluationFunction(self, currentGameState, action):
     return successorGameState.getScore() + score
 \end{lstlisting}
 
-\section{Batata Frita}
+\subsection{Tests}
+
+In order to test our new evaluation function, we executed the following test:
+
+\section{Minimax}
+
+\subsection{Tests}
+
+In order to test the MiniMax algorithm implemented, we ran it 20 times, using different depths, and the results are shown in the table below: \\
+
+\begin{center}
+  \begin{tabular}{||c||c|c|c||}
+    \hline
+    Iteration & 2 & 3 & 4 \\ [0.5ex]
+    \hline\hline
+    1 & -231 (L) & -276 (L) &  840 (W) \\
+    \hline
+    2 & -206 (L) & 1254 (W) &   32 (L) \\
+    \hline
+    3 & -244 (L) & -336 (L) & 1732 (W) \\
+    \hline
+    4 & -154 (L) & -263 (L) & -314 (L) \\
+    \hline
+    5 & 1249 (L) &  966 (W) &  311 (W) \\
+    \hline
+    6 & -688 (L) &  -96 (L) &  540 (L) \\
+    \hline
+    7 & -185 (L) & 1138 (W) &  204 (L) \\
+    \hline
+    8 & -203 (L) &  959 (W) &  479 (L) \\
+    \hline
+    9 & -239 (L) & 1531 (W) & 1171 (W) \\
+    \hline
+    10 & -140 (L) &  116 (L) &  -97 (L) \\
+    \hline
+    11 & -317 (L) & 1373 (W) &  896 (W) \\
+    \hline
+    12 &  178 (L) & 1039 (W) & 1218 (W) \\
+    \hline
+    13 & -176 (L) & -174 (L) & 1048 (W) \\
+    \hline
+    14 & -624 (L) & 1168 (W) &  223 (L) \\
+    \hline
+    15 & -180 (L) & -156 (L) &  402 (L) \\
+    \hline
+    16 & -238 (L) &  749 (W) & 1238 (W) \\
+    \hline
+    17 & -243 (L) & -267 (L) & 1202 (W) \\
+    \hline
+    18 &    8 (L) & 1147 (W) & 1631 (W) \\
+    \hline
+    19 & -368 (L) & 1319 (W) &  277 (L) \\
+    \hline
+    20 & -454 (L) & -272 (L) &  985 (W) \\
+    \hline\hline
+    Average &  -172.75 &  545.95 &  700.9 \\
+    \hline
+  \end{tabular}
+\end{center}
 
 \end{document}
