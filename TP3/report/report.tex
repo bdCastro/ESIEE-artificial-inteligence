@@ -3,6 +3,7 @@
 \usepackage{graphicx} % Required for inserting images
 \usepackage{color}
 \usepackage[a4paper, total={6.5in, 10in}]{geometry}
+\usepackage{enumitem}
 
 \lstnewenvironment{C}
   {\lstset{language=C}} 
@@ -19,13 +20,31 @@
   {\lstset{language=Python}}
   {}
 
-\title{\huge TP3 Report \\ Artificial Intelligence}
-\author{Bruno Luiz Dias Alves de Castro \\ Victor Gabriel Mendes Sündermann}
-\date{April 2023}
+% \title{\huge TP3 Report \\ Artificial Intelligence}
+% \author{Bruno Luiz Dias Alves de Castro \\ Victor Gabriel Mendes Sündermann}
+% \date{April 2023}
 
 \begin{document}
 
-\maketitle
+\begin{titlepage}
+\centering
+{\textsc{\Large ESIEE Paris \\ ~\\ Artificial Intelligence and Cybersecurity} \par}
+\vfill
+{\huge\bfseries Artificial Intelligence \par}
+\vspace{0.5cm}
+{\LARGE Lab 3 Report \par}
+\vspace{2cm}
+{\Large\itshape Bruno Luiz Dias Alves de Castro \par}
+{\Large\itshape Victor Gabriel Mendes Sündermann \par}
+\vfill
+
+% Bottom of the page
+{\large \today\par}
+\end{titlepage}
+
+\pagebreak
+\tableofcontents
+\pagebreak
 
 \section{Introduction}
 
@@ -38,7 +57,7 @@ To run the program, we use the following command:
 
 \definecolor{light-gray}{gray}{0.95}
 \begin{lstlisting}[language=bash, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
-    python3 pacman_AIC.py -p ReflexAgent [-l testClassic]
+  python3 pacman_AIC.py -p ReflexAgent [-l testClassic]
 \end{lstlisting}
 
 \hbox{}
@@ -49,6 +68,7 @@ The first two tests ran as expected, the Pacman tries to eat all the food in the
 
 This can be improved by implementing an evaluation function, which will be developed in the next section.
 
+\pagebreak
 \section{Reflex Agent}
 
 In this part, we were purposed to improve the \textbf{ReflexAgent} function in the \textbf{multiAgents.py} file in the project by proposing an evaluation function.
@@ -61,7 +81,7 @@ For our problem, we decided that a good action should be eating a food pellet, a
 
 \hbox{}
 
-\begin{lstlisting}[language=python]
+\begin{lstlisting}[language=bash, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
     return score + closestFoodScore - closestGhostScore
 \end{lstlisting}
 
@@ -103,8 +123,108 @@ def evaluationFunction(self, currentGameState, action):
 
 \subsection{Tests}
 
-In order to test our new evaluation function, we executed the following test:
+In order to test our new evaluation function, we executed the following tests:
 
+\subsubsection{testClassic}
+\label{sec:testClassic}
+
+\textbf Command:
+
+\begin{lstlisting}[language=bash, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
+    python3 pacman_AIC.py -p ReflexAgent -l testClassic
+\end{lstlisting}
+
+\noindent\textbf Output:
+
+\begin{lstlisting}[language=bash, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
+  Pacman emerges victorious! Score: 562
+  Average Score: 562.0
+  Scores:        562.0
+  Win Rate:      1/1 (1.00)
+  Record:        Win
+\end{lstlisting}
+
+\subsubsection{mediumClassic}
+\label{sec:mediumClassic}
+
+- One ghost test run \\
+~\\
+\textbf Command:
+
+\begin{lstlisting}[language=bash, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
+    python3 pacman_AIC.py -p ReflexAgent -k 1
+\end{lstlisting}
+
+\noindent\textbf Output:
+
+\begin{lstlisting}[language=bash, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
+    Pacman emerges victorious! Score: 1485
+    Average Score: 1485.0
+    Scores:        1485.0
+    Win Rate:      1/1 (1.00)
+    Record:        Win
+\end{lstlisting}
+
+~\\
+- Two ghosts test run \\
+~\\
+\textbf Command:
+
+\begin{lstlisting}[language=bash, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
+    python3 pacman_AIC.py -p ReflexAgent -k 2
+\end{lstlisting}
+
+\noindent\textbf Output:
+
+\begin{lstlisting}[language=bash, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
+    Pacman emerges victorious! Score: 1407
+    Average Score: 1407.0
+    Scores:        1407.0
+    Win Rate:      1/1 (1.00)
+    Record:        Win
+\end{lstlisting}
+
+\subsubsection{No layout 20 runs average}
+\label{sec:20runs}
+
+During this part of the testing, we ran the \textbf{ReflexAgent} 20 times on each of the 6 conbinations of the settings listed below, and calculated the average score and the win rate. The possible settings are as listed (indentified with the letters a-e):
+
+\begin{itemize}
+  \item Possible settings:
+  \begin{enumerate}[label=(\alph*)]
+    \item One ghost
+    \item Two ghosts
+    \item Random ghosts
+    \item Random ghosts with fixed seed
+    \item Non random ghost
+  \end{enumerate}
+\end{itemize}
+
+~\\
+The results obteined are shown in Table \ref{tab:reflexagent}.
+
+\begin{table}[!ht]
+  \begin{center}
+  \begin{tabular}{||c||c|c|c|c|c|c||}
+  \hline
+  Configuration & (a, c) & (a,d) & (a, e) & (b, c) & (b,d) & (b, e) \\
+  \hline\hline
+  Average Score & 671.65 & 785.2 & 449.9 & 464.7 & 228.7 & -14.25 \\
+  \hline\hline
+  Win Rate & 14/20 (0.70) & 18/20 (0.90) & 10/20 (0.50) & 10/20 (0.50) & 6/20 (0.30) & 1/20 (0.05) \\
+  \hline
+  \end{tabular}
+  \caption{ReflexAgent test results}
+  \label{tab:reflexagent}
+  \end{center}
+\end{table}
+
+\subsubsection{Results}
+The \textbf{ReflexAgent} was sucessful in clearing most of the purposed tests. Especially the the ran in sections \ref{sec:testClassic} and \ref{sec:mediumClassic} (\textbf{testClassic} and \textbf{mediumClassic}), were no problem for the agent.
+
+Things start to fall short when it comes to test in section \ref{sec:20runs}. The agent obtained decent success in the test with a single ghost, but performenced declined on tests with two ghost. The agent only cleared 6 out of 20 tests with random ghosts, and was onle able to clear a single test with non random ghosts.
+
+\pagebreak
 \section{Minimax}
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae nisl nec nunc placerat lacinia.
