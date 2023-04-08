@@ -124,22 +124,30 @@ class MinimaxAgent(MultiAgentSearchAgent):
     Your minimax agent (question 5)
     """
    
+    # maximaxer agent (pacman) function
     def MAX_VALUE(self, gameState, d):
         if d == 0 or gameState.isWin() or gameState.isLose():
+            # base case: return evaluation function
             return self.evaluationFunction(gameState), Directions.STOP
         
         bestScore, bestAction = -9999, Directions.STOP
 
         for action in gameState.getLegalActions(0):
             successors = gameState.generateSuccessor(0, action)
+
+            # call minimaxer agent (ghosts)
             value, _ = self.MIN_VALUE(successors, d, 1)
+
+            # update best score and action
             if value > bestScore:
                 bestScore, bestAction = value, action
 
         return bestScore, bestAction
 
+    # minimizer agent (ghosts) function
     def MIN_VALUE(self, gameState, d, indexAgent):
         if d == 0 or gameState.isWin() or gameState.isLose():
+            # base case: return evaluation function
             return self.evaluationFunction(gameState), Directions.STOP
 
         bestScore, bestAction = 9999, Directions.STOP
@@ -147,10 +155,13 @@ class MinimaxAgent(MultiAgentSearchAgent):
         for action in gameState.getLegalActions(indexAgent):
             successors = gameState.generateSuccessor(indexAgent, action)
             if indexAgent == gameState.getNumAgents() - 1:
+                # call pacman
                 value, _ = self.MAX_VALUE(successors, d - 1)
             else:
+                # call next ghost
                 value, _ = self.MIN_VALUE(successors, d, indexAgent + 1)
 
+            # update best score and action
             if value < bestScore:
                 bestScore, bestAction = value, action
 
@@ -188,13 +199,66 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
     """
     Your minimax agent with alpha-beta pruning (question 6)
     """
+    
+    def MAX_VALUE(self, gameState, d, alpha, beta):
+        if d == 0 or gameState.isWin() or gameState.isLose():
+            # base case: return evaluation function
+            return self.evaluationFunction(gameState), Directions.STOP
+        
+        bestScore, bestAction = -9999, Directions.STOP
+
+        for action in gameState.getLegalActions(0):
+            successors = gameState.generateSuccessor(0, action)
+
+            # call minimaxer agent (ghosts)
+            value, _ = self.MIN_VALUE(successors, d, 1, alpha, beta)
+
+            if value > beta:
+                return value, action
+
+            alpha = max(alpha, value)
+
+            # update best score and action
+            if value > bestScore:
+                bestScore, bestAction = value, action
+
+        return bestScore, bestAction
+
+    # minimizer agent (ghosts) function
+    def MIN_VALUE(self, gameState, d, indexAgent, alpha, beta):
+        if d == 0 or gameState.isWin() or gameState.isLose():
+            # base case: return evaluation function
+            return self.evaluationFunction(gameState), Directions.STOP
+
+        bestScore, bestAction = 9999, Directions.STOP
+
+        for action in gameState.getLegalActions(indexAgent):
+            successors = gameState.generateSuccessor(indexAgent, action)
+            if indexAgent == gameState.getNumAgents() - 1:
+                # call pacman
+                value, _ = self.MAX_VALUE(successors, d - 1, alpha, beta)
+            else:
+                # call next ghost
+                value, _ = self.MIN_VALUE(successors, d, indexAgent + 1, alpha, beta)
+
+            if value < alpha:
+                return value, action
+
+            beta = min(beta, value)
+
+            # update best score and action
+            if value < bestScore:
+                bestScore, bestAction = value, action
+
+        return bestScore, bestAction
 
     def getAction(self, gameState):
         """
         Returns the minimax action using self.depth and self.evaluationFunction
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        evaluation, action = self.MAX_VALUE(gameState, self.depth, -9999, 9999)
+
+        return action
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
     """

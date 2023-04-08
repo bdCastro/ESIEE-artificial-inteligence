@@ -207,7 +207,7 @@ The results obteined are shown in Table \ref{tab:reflexagent}.
   \begin{center}
   \begin{tabular}{||c||c|c|c|c|c|c||}
   \hline
-  Configuration & (a, c) & (a,d) & (a, e) & (b, c) & (b,d) & (b, e) \\
+  Configuration & (a, c) & (a, d) & (a, e) & (b, c) & (b, d) & (b, e) \\
   \hline\hline
   Average Score & 671.65 & 785.2 & 449.9 & 464.7 & 228.7 & -14.25 \\
   \hline\hline
@@ -236,18 +236,23 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae nisl nec nu
 \begin{table}[!ht]
 \begin{lstlisting}[language=python, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
 def MAX_VALUE(self, gameState, d):
-  if d == 0 or gameState.isWin() or gameState.isLose():
-      return self.evaluationFunction(gameState), Directions.STOP
-  
-  bestScore, bestAction = -9999, Directions.STOP
+    if d == 0 or gameState.isWin() or gameState.isLose():
+        # base case: return evaluation function
+        return self.evaluationFunction(gameState), Directions.STOP
+    
+    bestScore, bestAction = -9999, Directions.STOP
 
-  for action in gameState.getLegalActions(0):
-      successors = gameState.generateSuccessor(0, action)
-      value, _ = self.MIN_VALUE(successors, d, 1)
-      if value > bestScore:
-          bestScore, bestAction = value, action
+    for action in gameState.getLegalActions(0):
+        successors = gameState.generateSuccessor(0, action)
 
-  return bestScore, bestAction
+        # call minimaxer agent (ghosts)
+        value, _ = self.MIN_VALUE(successors, d, 1)
+
+        # update best score and action
+        if value > bestScore:
+            bestScore, bestAction = value, action
+
+    return bestScore, bestAction
 \end{lstlisting}
 \caption{Maximizer function}
 \end{table}
@@ -255,22 +260,26 @@ def MAX_VALUE(self, gameState, d):
 \begin{table}[!ht]
 \begin{lstlisting}[language=python, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
 def MIN_VALUE(self, gameState, d, indexAgent):
-  if d == 0 or gameState.isWin() or gameState.isLose():
-      return self.evaluationFunction(gameState), Directions.STOP
+    if d == 0 or gameState.isWin() or gameState.isLose():
+        # base case: return evaluation function
+        return self.evaluationFunction(gameState), Directions.STOP
 
-  bestScore, bestAction = 9999, Directions.STOP
+    bestScore, bestAction = 9999, Directions.STOP
 
-  for action in gameState.getLegalActions(indexAgent):
-      successors = gameState.generateSuccessor(indexAgent, action)
-      if indexAgent == gameState.getNumAgents() - 1:
-          value, _ = self.MAX_VALUE(successors, d - 1)
-      else:
-          value, _ = self.MIN_VALUE(successors, d, indexAgent + 1)
+    for action in gameState.getLegalActions(indexAgent):
+        successors = gameState.generateSuccessor(indexAgent, action)
+        if indexAgent == gameState.getNumAgents() - 1:
+            # call pacman
+            value, _ = self.MAX_VALUE(successors, d - 1)
+        else:
+            # call next ghost
+            value, _ = self.MIN_VALUE(successors, d, indexAgent + 1)
 
-      if value < bestScore:
-          bestScore, bestAction = value, action
+        # update best score and action
+        if value < bestScore:
+            bestScore, bestAction = value, action
 
-  return bestScore, bestAction
+    return bestScore, bestAction
 \end{lstlisting}
 \caption{Minimizer function}
 \end{table}
@@ -333,6 +342,59 @@ In order to test the Minimax algorithm implemented, we ran it 20 times, using di
     Best & 1249 & 1531 & 1732 \\
     \hline\hline
     Win Rate & 1/20 (0.05) & 11/20 (0.55) & 11/20 (0.55) \\
+    \hline
+  \end{tabular}
+  \caption{Minimax test results}
+  \end{center}
+\end{table}
+
+\pagebreak
+\section{AlphaBeta algorithm}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae nisl nec nunc placerat lacinia.
+
+\subsection{AlphaBeta implementation}
+
+In order to implement the AlphaBeta algorithm, we used the same functions as the Minimax algorithm, but added two parameters to the functions, alpha and beta. The alpha and beta parameters are used to prune the search tree, and are initialized as -9999 and 9999 respectively. The alpha and beta parameters are updated in the minimizer function, and the maximizer function, as shown in the code below:
+
+\begin{table}[!ht]
+  \begin{lstlisting}[language=python, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
+    """ CODE """
+
+    if value > beta:
+      return value, action
+
+    alpha = max(alpha, value)
+
+    """ CODE """
+  \end{lstlisting}
+  \caption{Maximizer function with beta pruning}
+\end{table}
+
+\begin{table}[!ht]
+  \begin{lstlisting}[language=python, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
+    """ CODE """
+
+    if value < alpha:
+      return value, action
+
+    """ CODE """
+  \end{lstlisting}
+  \caption{Minimizer function with alpha pruning}
+\end{table}
+
+
+\begin{table}[ht]
+  \begin{center}
+  \begin{tabular}{||c||c|c|c|c||}
+    \hline
+    Depth & 2 & 3 & 4 & 5 \\
+    \hline\hline
+    Average &  -121.5 &  413.6 &  635.85 & 0 \\
+    \hline\hline
+    Best & 1001 & 1604 & 1701 & 0 \\
+    \hline\hline
+    Win Rate & 1/20 (0.05) & 9/20 (0.45) & 11/20 (0.55) & 0 \\
     \hline
   \end{tabular}
   \caption{Minimax test results}
