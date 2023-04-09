@@ -15,6 +15,7 @@
 from util import manhattanDistance
 from game import Directions
 import random, util
+import math
 
 from game import Agent
 
@@ -130,7 +131,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
             # base case: return evaluation function
             return self.evaluationFunction(gameState), Directions.STOP
         
-        bestScore, bestAction = -9999, Directions.STOP
+        bestScore, bestAction = -math.inf, Directions.STOP
 
         for action in gameState.getLegalActions(0):
             successors = gameState.generateSuccessor(0, action)
@@ -150,7 +151,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
             # base case: return evaluation function
             return self.evaluationFunction(gameState), Directions.STOP
 
-        bestScore, bestAction = 9999, Directions.STOP
+        bestScore, bestAction = math.inf, Directions.STOP
 
         for action in gameState.getLegalActions(indexAgent):
             successors = gameState.generateSuccessor(indexAgent, action)
@@ -205,7 +206,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             # base case: return evaluation function
             return self.evaluationFunction(gameState), Directions.STOP
         
-        bestScore, bestAction = -9999, Directions.STOP
+        bestScore, bestAction = -math.inf, Directions.STOP
 
         for action in gameState.getLegalActions(0):
             successors = gameState.generateSuccessor(0, action)
@@ -230,7 +231,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             # base case: return evaluation function
             return self.evaluationFunction(gameState), Directions.STOP
 
-        bestScore, bestAction = 9999, Directions.STOP
+        bestScore, bestAction = math.inf, Directions.STOP
 
         for action in gameState.getLegalActions(indexAgent):
             successors = gameState.generateSuccessor(indexAgent, action)

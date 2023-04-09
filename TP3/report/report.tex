@@ -224,6 +224,7 @@ The \textbf{ReflexAgent} was sucessful in clearing most of the purposed tests. E
 
 Things start to fall short when it comes to test in section \ref{sec:20runs}. The agent obtained decent success in the test with a single ghost, but performenced declined on tests with two ghost. The agent only cleared 6 out of 20 tests with random ghosts, and was onle able to clear a single test with non random ghosts.
 
+\hfill\break
 \pagebreak
 \section{Minimax}
 
@@ -240,7 +241,7 @@ def MAX_VALUE(self, gameState, d):
         # base case: return evaluation function
         return self.evaluationFunction(gameState), Directions.STOP
     
-    bestScore, bestAction = -9999, Directions.STOP
+    bestScore, bestAction = -math.inf, Directions.STOP
 
     for action in gameState.getLegalActions(0):
         successors = gameState.generateSuccessor(0, action)
@@ -264,7 +265,7 @@ def MIN_VALUE(self, gameState, d, indexAgent):
         # base case: return evaluation function
         return self.evaluationFunction(gameState), Directions.STOP
 
-    bestScore, bestAction = 9999, Directions.STOP
+    bestScore, bestAction = math.inf, Directions.STOP
 
     for action in gameState.getLegalActions(indexAgent):
         successors = gameState.generateSuccessor(indexAgent, action)
@@ -294,48 +295,48 @@ In order to test the Minimax algorithm implemented, we ran it 20 times, using di
   \begin{tabular}{||c||c|c|c||}
     \hline
     Depth & 2 & 3 & 4 \\
-    \hline\hline
-    Iteration & - & - & - \\
-    \hline
-    1 & -231 (L) & -276 (L) &  840 (W) \\
-    \hline
-    2 & -206 (L) & 1254 (W) &   32 (L) \\
-    \hline
-    3 & -244 (L) & -336 (L) & 1732 (W) \\
-    \hline
-    4 & -154 (L) & -263 (L) & -314 (L) \\
-    \hline
-    5 & 1249 (W) &  966 (W) &  311 (W) \\
-    \hline
-    6 & -688 (L) &  -96 (L) &  540 (L) \\
-    \hline
-    7 & -185 (L) & 1138 (W) &  204 (L) \\
-    \hline
-    8 & -203 (L) &  959 (W) &  479 (L) \\
-    \hline
-    9 & -239 (L) & 1531 (W) & 1171 (W) \\
-    \hline
-    10 & -140 (L) &  116 (L) &  -97 (L) \\
-    \hline
-    11 & -317 (L) & 1373 (W) &  896 (W) \\
-    \hline
-    12 &  178 (L) & 1039 (W) & 1218 (W) \\
-    \hline
-    13 & -176 (L) & -174 (L) & 1048 (W) \\
-    \hline
-    14 & -624 (L) & 1168 (W) &  223 (L) \\
-    \hline
-    15 & -180 (L) & -156 (L) &  402 (L) \\
-    \hline
-    16 & -238 (L) &  749 (W) & 1238 (W) \\
-    \hline
-    17 & -243 (L) & -267 (L) & 1202 (W) \\
-    \hline
-    18 &    8 (L) & 1147 (W) & 1631 (W) \\
-    \hline
-    19 & -368 (L) & 1319 (W) &  277 (L) \\
-    \hline
-    20 & -454 (L) & -272 (L) &  985 (W) \\
+    % \hline\hline
+    % Iteration & - & - & - \\
+    % \hline
+    % 1 & -231 (L) & -276 (L) &  840 (W) \\
+    % \hline
+    % 2 & -206 (L) & 1254 (W) &   32 (L) \\
+    % \hline
+    % 3 & -244 (L) & -336 (L) & 1732 (W) \\
+    % \hline
+    % 4 & -154 (L) & -263 (L) & -314 (L) \\
+    % \hline
+    % 5 & 1249 (W) &  966 (W) &  311 (W) \\
+    % \hline
+    % 6 & -688 (L) &  -96 (L) &  540 (L) \\
+    % \hline
+    % 7 & -185 (L) & 1138 (W) &  204 (L) \\
+    % \hline
+    % 8 & -203 (L) &  959 (W) &  479 (L) \\
+    % \hline
+    % 9 & -239 (L) & 1531 (W) & 1171 (W) \\
+    % \hline
+    % 10 & -140 (L) &  116 (L) &  -97 (L) \\
+    % \hline
+    % 11 & -317 (L) & 1373 (W) &  896 (W) \\
+    % \hline
+    % 12 &  178 (L) & 1039 (W) & 1218 (W) \\
+    % \hline
+    % 13 & -176 (L) & -174 (L) & 1048 (W) \\
+    % \hline
+    % 14 & -624 (L) & 1168 (W) &  223 (L) \\
+    % \hline
+    % 15 & -180 (L) & -156 (L) &  402 (L) \\
+    % \hline
+    % 16 & -238 (L) &  749 (W) & 1238 (W) \\
+    % \hline
+    % 17 & -243 (L) & -267 (L) & 1202 (W) \\
+    % \hline
+    % 18 &    8 (L) & 1147 (W) & 1631 (W) \\
+    % \hline
+    % 19 & -368 (L) & 1319 (W) &  277 (L) \\
+    % \hline
+    % 20 & -454 (L) & -272 (L) &  985 (W) \\
     \hline\hline
     Average &  -173 &  546 &  701 \\
     \hline\hline
@@ -345,17 +346,22 @@ In order to test the Minimax algorithm implemented, we ran it 20 times, using di
     \hline
   \end{tabular}
   \caption{Minimax test results}
+  \label{tab:minimax}
   \end{center}
 \end{table}
 
 \pagebreak
 \section{AlphaBeta algorithm}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae nisl nec nunc placerat lacinia.
+The Alpha Beta implementation for the Minimax algorithm consists of two main changes: the addition of two parameters, alpha and beta, and the pruning of the search tree.
+
+The parameters alpha and beta helps the algorithm identify if it is possible to continue searching the tree, or if a optimal value was already reached. In this case, we proceed with the pruning of the search tree, and return the value of the node.
+
+This pruning is done in both the minimizer and maximizer functions, and help us reduce the number of nodes that are evaluated, and therefore, the time it takes to find the optimal move. This translates into a considerable performance improvement, as we will see in the next section.
 
 \subsection{AlphaBeta implementation}
 
-In order to implement the AlphaBeta algorithm, we used the same functions as the Minimax algorithm, but added two parameters to the functions, alpha and beta. The alpha and beta parameters are used to prune the search tree, and are initialized as -9999 and 9999 respectively. The alpha and beta parameters are updated in the minimizer function, and the maximizer function, as shown in the code below:
+In order to implement the AlphaBeta algorithm, we used the same functions as the Minimax algorithm, but added two parameters to the functions, alpha and beta. The alpha and beta parameters are used to prune the search tree, and are initialized as \textbf{-math.inf} and \textbf{math.inf} respectively. The alpha and beta parameters are updated in the minimizer function, and the maximizer function, as shown in the code below:
 
 \begin{table}[!ht]
   \begin{lstlisting}[language=python, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
@@ -383,21 +389,73 @@ In order to implement the AlphaBeta algorithm, we used the same functions as the
   \caption{Minimizer function with alpha pruning}
 \end{table}
 
+\subsection{Tests}
 
-\begin{table}[ht]
+In order to test the performance of the Alpha Beta algorithm, we used the same tests as the Minimax algorithm, and compared the results. The results are shown in the table below:
+
+~\\
+\begin{table}[!ht]
   \begin{center}
-  \begin{tabular}{||c||c|c|c|c||}
-    \hline
-    Depth & 2 & 3 & 4 & 5 \\
-    \hline\hline
-    Average &  -121.5 &  413.6 &  635.85 & 0 \\
-    \hline\hline
-    Best & 1001 & 1604 & 1701 & 0 \\
-    \hline\hline
-    Win Rate & 1/20 (0.05) & 9/20 (0.45) & 11/20 (0.55) & 0 \\
-    \hline
-  \end{tabular}
-  \caption{Minimax test results}
+    \begin{tabular}{||c||c|c|c|c||}
+      \hline
+      Depth & 2 & 3 & 4 \\
+      \hline\hline
+      Average &  -121.5 &  413.6 &  635.85 \\
+      \hline\hline
+      Best & 1001 & 1604 & 1701 \\
+      \hline\hline
+      Win Rate & 1/20 (0.05) & 9/20 (0.45) & 11/20 (0.55) \\
+      \hline
+    \end{tabular}
+    \caption{AlphaBeta test results}
+    \label{tab:alphabeta}
+  \end{center}
+\end{table}
+
+\subsubsection{Performance comparison with Minimax}
+After running the tests, we compared the performance of the Minimax (Table~\ref{tab:minimax}) and Alpha Beta (Table~\ref{tab:alphabeta}) algorithms.
+
+As expected, the performance between the two algorithms is pratically the same. That's expected, as the main functionallity of both algorithm is the same, the onlt different between the two being the pruning in the Alpha Beta version.
+
+Where the difference is definitely noticeable is in the runtime of both algorithms. To test this, we ran the same tests as before, but with a depth of 3, and compared the results. The results are shown in Table~\ref{tab:minimax_vs_alphabeta}. As we can see, the Alpha Beta algorithm is 15.6\% faster than the Minimax algorithm.
+
+~\\
+\begin{table}[!ht]
+  \begin{center}
+    \begin{tabular}{||c||c|c|c||}
+      \hline
+      Algorithm & Minimax & AlphaBeta \\
+      \hline\hline
+      Time & 167.78s & 145.10s \\
+      \hline\hline
+      Speedup & - & 15.6\% \\
+      \hline
+    \end{tabular}
+    \caption{Minimax VS AlphaBeta (Depth=3)}
+    \label{tab:minimax_vs_alphabeta}
+  \end{center}
+\end{table}
+
+The speedup obtain in this test is not that significant, but it is still a considerable improvement. This shy performance improvement is most likely due to the fact that the main botleneck of the algorithm is not the search. In our tests, we noticed that, due to the depth limit, when the Pacman eventually gets isolated in a area of the maze with no food, the algorithm doesn't really know what to do, and this leads to games that take a long time to finish.
+
+To verify this, we ran the same test with the DirectinalGhost option. This forces the Pacman to move more frequently (as it is now being more effectively chased by the ghosts), but due to the exploration depth limitation, it loses games more oftenly. The results are shown in Table~\ref{tab:minimax_vs_alphabeta2}.
+
+Now the speedup is much more significant, as the Alpha Beta algorithm is 83.5\% faster than the Minimax algorithm. There is still more room to improvement though, but the performance gain is already considerable.
+
+~\\
+\begin{table}[!ht]
+  \begin{center}
+    \begin{tabular}{||c||c|c|c||}
+      \hline
+      Algorithm & Minimax & AlphaBeta \\
+      \hline\hline
+      Time & 38.58s & 21.03s \\
+      \hline\hline
+      Speedup & - & 83.5\% \\
+      \hline
+    \end{tabular}
+    \caption{Minimax VS AlphaBeta (Depth=3, DirectionalGhost)}
+    \label{tab:minimax_vs_alphabeta2}
   \end{center}
 \end{table}
 
