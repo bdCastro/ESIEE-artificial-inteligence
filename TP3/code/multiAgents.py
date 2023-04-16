@@ -99,14 +99,7 @@ def scoreEvaluationFunction(currentGameState):
     (not reflex agents).
     """
 
-    def closestFoodDistance(foodList, pacmanPosition):
-        if len(foodList) == 0:
-            return 0
-
-        return min([manhattanDistance(pacmanPosition, food) for food in foodList])
-
-    return currentGameState.getScore() - 100*currentGameState.getNumFood() \
-        - 10*closestFoodDistance(currentGameState.getFood().asList(), currentGameState.getPacmanPosition())
+    return currentGameState.getScore()
 
 class MultiAgentSearchAgent(Agent):
     """
@@ -351,9 +344,16 @@ def betterEvaluationFunction(currentGameState):
     DESCRIPTION: <write something here so we know what you did>
     """
     
-    "*** YOUR CODE HERE ***"
+    def closestFoodDistance(gameState):
+        pacmanPosition = gameState.getPacmanPosition()
+        foodList = gameState.getFood().asList()
 
-    util.raiseNotDefined()
+        if len(foodList) == 0:
+            return 0
+
+        return min([manhattanDistance(pacmanPosition, food) for food in foodList])
+
+    return currentGameState.getScore() - (10 * closestFoodDistance(currentGameState))
 
 # Abbreviation
 better = betterEvaluationFunction
