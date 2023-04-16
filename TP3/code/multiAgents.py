@@ -353,7 +353,8 @@ def betterEvaluationFunction(currentGameState):
 
         return min([manhattanDistance(pacmanPosition, food) for food in foodList])
 
-    return currentGameState.getScore() - (10 * closestFoodDistance(currentGameState))
+    closestFood = closestFoodDistance(currentGameState)
+    return currentGameState.getScore() - (10 * closestFood) - (100 * currentGameState.getNumFood())
 
 # Abbreviation
 better = betterEvaluationFunction
