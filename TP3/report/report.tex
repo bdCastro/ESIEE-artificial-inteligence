@@ -4,6 +4,7 @@
 \usepackage{color}
 \usepackage[a4paper, total={6.5in, 10in}]{geometry}
 \usepackage{enumitem}
+\usepackage{hyperref}
 
 \lstnewenvironment{C}
   {\lstset{language=C}} 
@@ -34,6 +35,7 @@
 \vspace{0.5cm}
 {\LARGE Lab 3 Report \par}
 \vspace{2cm}
+{\Large\itshape Antoine Debauge \par}
 {\Large\itshape Bruno Luiz Dias Alves de Castro \par}
 {\Large\itshape Victor Gabriel Mendes Sündermann \par}
 \vfill
@@ -46,18 +48,25 @@
 \tableofcontents
 \pagebreak
 
+\definecolor{light-gray}{gray}{0.95}
 \section{Introduction}
 
 In this report, we will present the results of the third project of the Artificial Intelligence course, which consists of implementing various search engines algo such as Expectimax, Alpha Beta.
 These engines will be used by our agent Pacman seeking to achieve the best possible outcome, while eating the pebbles and evanding the ghosts.
-The project was developed in Python language and the original code for the Pacman Game that was used as a base for this project was implemented by UC Berkeley and can be found in the following link: \url{https://inst.eecs.berkeley.edu/~cs188/sp21/project3/}.
+\\~\\
+The project was developed in Python language and the original code for the Pacman Game that was used as a base for this project was implemented by UC Berkeley.
+\\~\\
+The GitHub repository for this project can be found in the link below:
+
+\begin{center}
+  \url{https://github.com/bdCastro/ESIEE-artificial-inteligence}
+\end{center}
 
 \section{Tests}
 To run the program, we use the following command:
 
 \hbox{}
 
-\definecolor{light-gray}{gray}{0.95}
 \begin{lstlisting}[language=bash, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
   python3 pacman_AIC.py -p ReflexAgent [-l testClassic]
 \end{lstlisting}
@@ -189,7 +198,7 @@ In order to test our new evaluation function, we executed the following tests:
 \subsubsection{No layout 20 runs average}
 \label{sec:20runs}
 
-During this part of the testing, we ran the \textbf{ReflexAgent} 20 times on each of the 6 conbinations of the settings listed below, and calculated the average score and the win rate. The possible settings are as listed (indentified with the letters a-e):
+During this part of the testing, we ran the \textbf{ReflexAgent} 20 times on each of the 6 combinations of the settings listed below, and calculated the average score and the win rate. The possible settings are as listed (indentified with the letters a-e):
 
 \begin{itemize}
   \item Possible settings:
@@ -203,7 +212,7 @@ During this part of the testing, we ran the \textbf{ReflexAgent} 20 times on eac
 \end{itemize}
 
 ~\\
-The results obteined are shown in Table \ref{tab:reflexagent}.
+The results obtained are shown in Table \ref{tab:reflexagent}.
 
 \begin{table}[!ht]
   \begin{center}
@@ -222,26 +231,26 @@ The results obteined are shown in Table \ref{tab:reflexagent}.
 \end{table}
 
 \subsubsection{Results}
-The \textbf{ReflexAgent} was sucessful in clearing most of the purposed tests. Especially the the ran in sections \ref{sec:testClassic} and \ref{sec:mediumClassic} (\textbf{testClassic} and \textbf{mediumClassic}), were no problem for the agent.
+The \textbf{ReflexAgent} was sucessful in clearing most of the purposed tests. Especially the ones ran in sections \ref{sec:testClassic} and \ref{sec:mediumClassic}, (\textbf{testClassic} and \textbf{mediumClassic}), were no problem for the agent.
 
-Things start to fall short when it comes to test in section \ref{sec:20runs}. The agent obtained decent success in the test with a single ghost, but performenced declined on tests with two ghost. The agent only cleared 6 out of 20 tests with random ghosts, and was onle able to clear a single test with non random ghosts.
+Things start to fall short when it comes to test in section \ref{sec:20runs}. The agent obtained decent success in the test with a single ghost, but performance declined on tests with two ghost. The agent only cleared 6 out of 20 tests with random ghosts, and was only able to clear a single test with non-random ghosts.
 
 \hfill\break
 \pagebreak
 \section{Minimax algorithm}
 
-The Minimax algorithm consists in the following idea: two "players" (or agents) are competing against each other in a game. As both players equally want to win this game, if we assume the point of view of one of them, we can say that player wish to maximize its score, and the opponent is trying to maximize the most it can.
+The Minimax algorithm consists of the following idea: two "players" (or agents) are competing against each other in a game. As both players equally want to win this game, if we assume the point of view of one of them, we can say that player wishes to maximize his score, and the opponent is trying to minimize it as much as possible.
 
-It's possible to simulate such a scenario, by making both players take turns, and attributing a "score" to each play. Every time a "maximizer player" plays, it chooses the maximum score possible, and every time a "minimizer" player player, it chooses the minimum score available.
+It's possible to simulate such a scenario, by making both players take turns, and attributing a "score" to each play. Every time a "maximizer player" plays, it chooses the maximum score possible, and every time a "minimizer" player plays, it chooses the minimum score available.
 
-By simulate all possible plays in a game from a given game state, we can write an algorithm that alternate between maximize and minimize plays, and chooses the optimal path in a tree of possible outcomes for the game. This takes into account that all players always take the best play possible (what may not happen in all scenarios, we explore this further in Section~\ref{sec:expectimax}).
+By simulating all possible plays in a game from a given game state, we can write an algorithm that alternates between maximizing and minimizing plays, and chooses the optimal path in a tree of possible outcomes for the game. This takes into account that all players always take the best play possible (what may not happen in all scenarios, we explore this further in Section~\ref{sec:expectimax}).
 ~\\
 ~\\
-An implementation of such approch is described in the following section.
+An implementation of such approach is described in the following section.
 
 \subsection{Minimax implementation}
 
-To make this implementation possible, we started by implementing two functions: one for the maximizer (Pacman), and one for the minimizer (ghosts). We start by calling the maximizer, that looks for all possible plays of the minimizer agent. They recursivly call each other, until a "depth" parameters reachs zero, or the game terminates. This depth parameter is necessary, because of the complexity of this algorithm. As every agent calls the next on recursivly, this results in a tree of calls that expands indefinetly until the end of the game is reach. If we don't interupt the search, this algorithm would take ages to compute a play.
+To make this implementation possible, we started by implementing two functions: one for the maximizer (Pacman), and one for the minimizer (ghosts). We start by calling the maximizer, that looks for all possible plays of the minimizer agent. They recursively call each other until a "depth" parameters reachs zero, or the game terminates. This depth parameter is necessary, because of the complexity of this algorithm. As every agent calls the next one recursivly, this results in a tree of calls that expands indefinetly until the end of the game is reach. If we don't interupt the search, this algorithm would take ages to compute a play.
 ~\\
 ~\\
 The implementation of both functions can be seen in Tables~\ref{tab:minimax-maximizer} and~\ref{tab:minimax-minimizer}.
@@ -299,11 +308,11 @@ def MIN_VALUE(self, gameState, d, indexAgent):
 \label{tab:minimax-minimizer}
 \end{table}
 
-In the case of the minimizer function, when calculating the possible plays for it's children, it first call the remaining ghosts. If all ghosts already played that turn, it then calls the maximizer (Pacman), and decreases the depth parameter.
+In the case of the minimizer function, when calculating the possible plays for it's children, it first calls the remaining ghosts. If all ghosts already played that turn, it then calls the maximizer (Pacman), and decreases the depth parameter.
 
 \subsection{Tests}
 
-In order to test the Minimax algorithm implemented, we ran it 20 times, using different depths, and the results are shown in the table below: \\
+In order to test the Minimax algorithm, we ran it 20 times, using different depths, and the results are shown in the table below: \\
 
 \begin{table}[ht]
   \begin{center}
@@ -365,8 +374,8 @@ In order to test the Minimax algorithm implemented, we ran it 20 times, using di
   \end{center}
 \end{table}
 
-Analysing the results, we reached the following conclusions: First, is that the algorithm performs better the more depth we add to the search. This is no surprise: the more we search the tree, the closer we approch the optimal sollution.
-Lastly, the more we increment the depth, the more time it takes to conclude the search. Due to the exponential nature of this algorithm, it's not possible to go much further than what we already done. With a depth of 4 it already took close to an hour to terminate. Luckly, there is an improvement that can be done to acelerate this process a bit, and we explore it in the next section.
+Analysing the results, we reached the following conclusions: First, is that the algorithm performs better the more depth we add to the search. This is no surprise: the more we search the tree, the closer we approch the optimal solution.
+Lastly, the more we increment the depth, the more time it takes to conclude the search. Due to the exponential nature of this algorithm, it's not possible to go much further than what we have already done. With a depth of 4 it already took close to an hour to terminate. Luckly, there is an improvement that can be done to acelerate this process a bit, and we explore it in the next section.
 
 \pagebreak
 \section{AlphaBeta algorithm}
@@ -379,7 +388,7 @@ This pruning is done in both the minimizer and maximizer functions, and help us 
 
 \subsection{AlphaBeta implementation}
 
-In order to implement the AlphaBeta algorithm, we used the same functions as the Minimax algorithm, but added two parameters to the functions, alpha and beta. The alpha and beta parameters are used to prune the search tree, and are initialized as \textbf{-math.inf} and \textbf{math.inf} respectively. The alpha and beta parameters are updated in the minimizer function, and the maximizer function, as shown in the code below:
+In order to implement the AlphaBeta algorithm, we used the same functions as the Minimax algorithm, but added the alpha and beta parameters to the functions. These parameters are used to prune the search tree and are initialized as \textbf{-math.inf} and \textbf{math.inf} respectively. The alpha and beta parameters are updated in the minimizer and maximizer function, as shown in the code below:
 
 \begin{table}[!ht]
   \begin{lstlisting}[language=python, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
@@ -409,7 +418,7 @@ In order to implement the AlphaBeta algorithm, we used the same functions as the
 
 \subsection{Tests}
 
-In order to test the performance of the Alpha Beta algorithm, we used the same tests as the Minimax algorithm, and compared the results. The results are shown in the table below:
+In order to test the performance of the Alpha Beta algorithm, we used the same tests as the Minimax algorithm, and compared the results which are shown in the table below:
 
 ~\\
 \begin{table}[!ht]
@@ -431,11 +440,11 @@ In order to test the performance of the Alpha Beta algorithm, we used the same t
 \end{table}
 
 \subsubsection{Performance comparison with Minimax}
-After running the tests, we compared the performance of the Minimax (Table~\ref{tab:minimax}) and Alpha Beta (Table~\ref{tab:alphabeta}) algorithms.
+After running the tests, we compared the performance of the Minimax (Table~\ref{tab:minimax}) and AlphaBeta (Table~\ref{tab:alphabeta}) algorithms.
 
-As expected, the performance between the two algorithms is pratically the same. That's expected, as the main functionallity of both algorithm is the same, the onlt different between the two being the pruning in the Alpha Beta version.
+As expected, the performance between the two algorithms is pratically the same. That's expected, as the main functionality of both algorithm is the same, the only difference between the two being the pruning in the Alpha Beta version.
 
-Where the difference is definitely noticeable is in the runtime of both algorithms. To test this, we ran the same tests as before, but with a depth of 3, and compared the results. The results are shown in Table~\ref{tab:minimax_vs_alphabeta}. As we can see, the Alpha Beta algorithm is 15.6\% faster than the Minimax algorithm.
+Where the difference is definitely noticeable is in the runtime of both algorithms. To test this we ran the same tests as before, but with a depth of 3, and compared the results which are shown in Table~\ref{tab:minimax_vs_alphabeta}. As we can see, the Alpha Beta algorithm is 15.6\% faster than the Minimax algorithm.
 
 ~\\
 \begin{table}[!ht]
@@ -454,9 +463,9 @@ Where the difference is definitely noticeable is in the runtime of both algorith
   \end{center}
 \end{table}
 
-The speedup obtain in this test is not that significant, but it is still a considerable improvement. This shy performance improvement is most likely due to the fact that the main botleneck of the algorithm is not the search. In our tests, we noticed that, due to the depth limit, when the Pacman eventually gets isolated in a area of the maze with no food, the algorithm doesn't really know what to do, and this leads to games that take a long time to finish.
+The speedup obtained in this test is not that significant, but it is still a considerable improvement. This shy performance improvement is most likely due to the fact that the main bottleneck of the algorithm is not the search. In our tests we noticed that, due to the depth limit, when the Pacman eventually gets isolated in an area of the maze with no food, the algorithm doesn't really know what to do, and this leads to games that take a long time to finish.
 
-To verify this, we ran the same test with the DirectinalGhost option. This forces the Pacman to move more frequently (as it is now being more effectively chased by the ghosts), but due to the exploration depth limitation, it loses games more oftenly. The results are shown in Table~\ref{tab:minimax_vs_alphabeta2}.
+To verify this, we ran the same test with the 'DirectinalGhost' option. This forces the Pacman to move more frequently (as it is now being more effectively chased by the ghosts), but due to the exploration depth limitation, it loses games more oftenly. The results are shown in Table~\ref{tab:minimax_vs_alphabeta2}.
 
 Now the speedup is much more significant, as the Alpha Beta algorithm is 83.5\% faster than the Minimax algorithm. There is still more room to improvement though, but the performance gain is already considerable.
 
@@ -482,14 +491,14 @@ Now the speedup is much more significant, as the Alpha Beta algorithm is 83.5\% 
 
 The Expectimax algorithm is a varation of the Minimax algorithm. In this version, the minimizer function is replaced by an expectation function, which calculates the expected value of the next move. This is done by calculating the average of the values of all the possible moves.
 
-This is extremelly usefull in our Pacman case, especially in cases where we execute the simulations with a random ghost movement. In these scenarios, the minimizer is as likely to take the worst movement possible as it is to do the best. The clasical algorith is great when the movements are always the best ones, but starts to fall apart when the opponent makes unexpected decisions. Knowing this, we alter the minimizer function to calculate an expected value instead of the absolute best one (the minimum in this case).
+This is extremelly usefull in our Pacman case, especially in cases where we execute the simulations with a random ghost movement. In these scenarios, the minimizer is as likely to take the worst movement possible as it is to do the best. The clasical algorithm is great when the movements are always the best ones, but starts to fall apart when the opponent makes unexpected decisions. Knowing this, we alter the minimizer function to calculate an expected value instead of the absolute best one (the minimum in this case).
 
 We describe the implementation in the next section.
 
 \subsection{Expectimax implementation}
 \label{sec:expectimax}
 
-In order to implement the Expectimax algorith, the only change necessary is done to the Minimizer function. We used the same one implementd before, and added the following code to it:
+In order to implement the Expectimax algorithm, the only change necessary is done to the Minimizer function. We used the same one implemented before and added the following code to it:
 
 \begin{table}[!ht]
   \begin{lstlisting}[language=python, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
@@ -530,17 +539,17 @@ We ran the same tests as before, but with the Expectimax algorithm. The results 
 \pagebreak
 \section{Bonus: Evaluation function improvement}
 
-After implementing and running countless test to all algorithm proposed, we identified a serious problem with the evaluation function used in the project: It was the main piece holding our implementations back, and the perormance of our algorithms were suffering a lot because of it.
+After implementing and running countless test to all algorithms proposed, we identified a serious problem with the evaluation function used in the project: It was the main piece holding our implementations back, and the perormance of our algorithms were suffering a lot because of it.
 
-The default evaluation function implemented in the project is the \textit{\textbf{scoreEvaluationFunction}}. The evaluation function only takes into account the current score of the games. It gets the work done in some of the cases, but has two serious draw-backs: It doesn't take into account the number of food left in the maze, and it doesn't take into account the distance to the closest food. As a result, when the Pacman gets "isolated" in a part of the map without any food, it hasn't anything to maximize, and needs a ghost to approch in order to proceed the game.
+The default evaluation function implemented in the project is the \textit{\textbf{scoreEvaluationFunction}}. This function only takes into account the current score of the games. It gets the work done in some of the cases, but has two serious draw-backs: It doesn't take into account the number of food left in the maze, and it doesn't take into account the distance to the closest food. As a result, when the Pacman gets "isolated" in a part of the map without any food, it hasn't anything to maximize, and needs a ghost to approch in order to proceed the game.
 
-To solve this problem, we sugest a new evaluation function, called \textit{\textbf{betterEvaluationFunction}}. It's implementation and functionallity is explained in the following section.
+To solve this problem, we sugest a new evaluation function, called \textit{\textbf{betterEvaluationFunction}}. It's implementation and functionabillity is explained in the following section.
 
 \subsection{The new evaluation function: betterEvaluationFunction}
 
 The proposed evaluation function takes into account this two extra parameters (along with the score): \textit{the number of food pallets left} and \textit{the distance to the closest food}. The number of food pallets left encourages the Pacman to eat more pallets when stuck, and the distance to the closest food will prevent the Pacman of isolating itself in the maze.
 
-the implementation is described in the following section.
+The implementation is described in the following section.
 
 \subsubsection{betterEvaluationFunction implementation}
 
@@ -572,13 +581,13 @@ def betterEvaluationFunction(currentGameState):
   \caption{betterEvaluationFunction implementation}
 \end{table}
 
-For calculation the distance to the closest food, we used the the Manhattan Distance (implemented in the function itself), and the number of food is retrieved from the game state. They are multiplied by 10 and 100, respectively, in order to have a bigger impact in the final score, and subtracted from the current game score.
+For calculating the distance to the closest food, we used the the Manhattan Distance (implemented in the function itself), and the number of food is retrieved from the game state. They are multiplied by 10 and 100, respectively, in order to have a bigger impact in the final score, and subtracted from the current game score.
 
 The results of our implementation is showed in the next section.
 
 \subsubsection{betterEvaluationFunction tests}
 
-To test the new \textit\textbf{{betterEvaluationFunction}}, we repeated the same tests executed before, now using the this new evaluation function instead of the old \textit\textbf{{scoreEvaluationFunction}}. We chose the  \textit\textbf{{Expectimax agent}} to run the tests. Its description and implementation can be found in Section~\ref{sec:expectimax}.
+To test the new \textit\textbf{{betterEvaluationFunction}}, we repeated the same tests executed before, now using the new evaluation function instead of the old \textit\textbf{{scoreEvaluationFunction}}. We chose the \textit\textbf{{Expectimax agent}} to run the tests. Its description and implementation can be found in Section~\ref{sec:expectimax}.
 ~\\
 ~\\
 The result of the tests can be found in Table~\ref{tab:expectimax-better}.
@@ -606,5 +615,7 @@ Comparing both results of Tables~\ref{tab:expectimax} and~\ref{tab:expectimax-be
 
 \pagebreak
 \section{Conclusion}
+
+This lab was essential to our understanding on Artificial Inteligence, search agents and algorithms. We were able to learn and understand the concepts of search algorithms, the differences and nuances between all the algorithms proposed and, through various tests, determine which implementation is the best, both in time and performance.
 
 \end{document}
