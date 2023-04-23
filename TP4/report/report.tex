@@ -48,36 +48,28 @@
 
 \section{Introduction}
 
-In this report, we will present the results of the third project of the Artificial Intelligence course. The project consists of implementing
+In this report we will present the results of the fourth project of the Artificial Intelligence course. The project consists of implementing reinforcement learning algorithms and agents to score actions on a grid and eventually solve the \textbf{Pacman} game.
+The topics worked on this lab were: Value Iteration, Q-Learning, and aproximate Q-Learning.
 
-\section{Tests}
+\section{Value Iteration}
 To run the program, we use the following command:
 
 \hbox{}
 
 \definecolor{light-gray}{gray}{0.95}
 \begin{lstlisting}[language=bash, frame=tlbr, framesep=6pt, backgroundcolor=\color{light-gray}]
-  python3 pacman_AIC.py -p ReflexAgent [-l testClassic]
+  python3 gridworld.py -a value -i 5
 \end{lstlisting}
 
 \hbox{}
 
-Running the command without the flag \textit{-l testClassic}, renders a version of the maze without any walls.
+This test created the expected output as shown in the following image:
 
-The first two tests ran as expected, the Pacman tries to eat all the food in the field while avoiding all the ghosts. The mai problem with both tests is that, while avoiding the ghosts, it'll stay in place most of the time, and not go after the food.
+\hbox{}
+\includegraphics[width=0.5\textwidth]{images/value_iteration.png}
+\hbox{}
 
-This can be improved by implementing an evaluation function, which will be developed in the next section.
-
-\pagebreak
-\section{Reflex Agent}
-
-In this part, we were purposed to improve the \textbf{ReflexAgent} function in the \textbf{multiAgents.py} file in the project by proposing an evaluation function.
-
-\subsection{ReflexAgent improvement}
-
-In order to improve the \textbf{ReflexAgent}, we need a good evalution function to help the AI decide what to do next. A great evaluation function should be able to tell the agent what is the best action to take in a given state, rewarding good actions and punishing bad ones.
-
-For our problem, we decided that a good action should be eating a food pellet, and a bad action should be getting eaten by a ghost. So, our evaluation function calculates the distance of Pacman to the food pallets and the ghosts. It then returns a score like the following:
+\section{Q-Learning}
 
 \hbox{}
 
