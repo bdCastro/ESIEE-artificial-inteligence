@@ -48,7 +48,9 @@
 
 \section{Introduction}
 
-In this report, we will present the results of the third project of the Artificial Intelligence course. The project consists of implementing
+In this report, we will present the results of the third project of the Artificial Intelligence course, which consists of implementing various search engines algo such as Expectimax, Alpha Beta.
+These engines will be used by our agent Pacman seeking to achieve the best possible outcome, while eating the pebbles and evanding the ghosts.
+The project was developed in Python language and the original code for the Pacman Game that was used as a base for this project was implemented by UC Berkeley and can be found in the following link: \url{https://inst.eecs.berkeley.edu/~cs188/sp21/project3/}.
 
 \section{Tests}
 To run the program, we use the following command:
@@ -64,20 +66,20 @@ To run the program, we use the following command:
 
 Running the command without the flag \textit{-l testClassic}, renders a version of the maze without any walls.
 
-The first two tests ran as expected, the Pacman tries to eat all the food in the field while avoiding all the ghosts. The mai problem with both tests is that, while avoiding the ghosts, it'll stay in place most of the time, and not go after the food.
+The first two tests ran as expected, the Pacman tries to eat all the food in the field while avoiding all the ghosts. The main problem with both tests is that, while avoiding the ghosts, it'll stay in place most of the time, and not go after the food.
 
 This can be improved by implementing an evaluation function, which will be developed in the next section.
 
 \pagebreak
 \section{Reflex Agent}
 
-In this part, we were purposed to improve the \textbf{ReflexAgent} function in the \textbf{multiAgents.py} file in the project by proposing an evaluation function.
+In this part, we were tasked with improving the \textbf{ReflexAgent} function in the \textbf{multiAgents.py} file in the project by proposing an evaluation function.
 
 \subsection{ReflexAgent improvement}
 
 In order to improve the \textbf{ReflexAgent}, we need a good evalution function to help the AI decide what to do next. A great evaluation function should be able to tell the agent what is the best action to take in a given state, rewarding good actions and punishing bad ones.
 
-For our problem, we decided that a good action should be eating a food pellet, and a bad action should be getting eaten by a ghost. So, our evaluation function calculates the distance of Pacman to the food pallets and the ghosts. It then returns a score like the following:
+For this problem, we considered that a good action would be eating a food pellet, and a bad action would be getting eaten by a ghost. Considering this, our evaluation function calculates the distance of Pacman to the food pallets and the ghosts. It then returns a score like the following:
 
 \hbox{}
 
@@ -87,7 +89,7 @@ For our problem, we decided that a good action should be eating a food pellet, a
 
 \hbox{}
 
-We also decided on using the Manhattan distance to calculate the distance between Pacman, the ghosts and the food pellets, because it is a less computationally expensive sollution to this problem, and don't really affect the final score.
+We also decided on using the Manhattan distance to calculate the distance between Pacman, the ghosts and the food pellets, because it is a less computationally expensive sollution to this problem, and doesn't really affect the final score.
 
 \hbox{}
 
